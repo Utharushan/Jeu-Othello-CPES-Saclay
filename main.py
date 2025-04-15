@@ -3,7 +3,6 @@ import sys
 import copy
 import math
 
-# Constantes
 TAILLE = 8
 TAILLE_CASE = 80
 DIMENSION = TAILLE * TAILLE_CASE
@@ -142,43 +141,43 @@ def minmax(plateau, profondeur, maximisant, joueur, alpha, beta):
 
 
 def menu():
-    # Chargement de l'image de fond
-    fond = pygame.image.load("background.jpg").convert_alpha()
-    fond = pygame.transform.scale(fond, (840, 640))
+	# Chargement de l'image de fond
+	fond = pygame.image.load("background.jpg").convert_alpha()
+	fond = pygame.transform.scale(fond, (840, 640))
 
-    running = True
-    choix = 0
-    options = ["2 joueurs", "Joueur vs IA"]
-    while running:
-        screen.blit(fond, (0, 0))
+	running = True
+	choix = 0
+	options = ["2 joueurs", "Joueur vs IA"]
+	while running:
+		screen.blit(fond, (0, 0))
 
-        # Création des boutons
-        btn1 = pygame.Rect(840 // 2 - 150, 200, 300, 60)
-        btn2 = pygame.Rect(840 // 2 - 150, 300, 300, 60)
-        pygame.draw.rect(screen, GRIS, btn1)
-        pygame.draw.rect(screen, GRIS, btn2)
+		# Création des boutons
+		btn1 = pygame.Rect(840 // 2 - 150, 200, 300, 60)
+		btn2 = pygame.Rect(840 // 2 - 150, 300, 300, 60)
+		pygame.draw.rect(screen, GRIS, btn1)
+		pygame.draw.rect(screen, GRIS, btn2)
 
-        # Affichage des textes centrés dans les boutons
-        txt1 = font.render("2 joueurs", True, NOIR)
-        txt2 = font.render("Joueur vs IA", True, NOIR)
-        screen.blit(txt1, (btn1.x + (btn1.width - txt1.get_width()) // 2, btn1.y + (btn1.height - txt1.get_height()) // 2))
-        screen.blit(txt2, (btn2.x + (btn2.width - txt2.get_width()) // 2, btn2.y + (btn2.height - txt2.get_height()) // 2))
+		# Affichage des textes centrés dans les boutons
+		txt1 = font.render("2 joueurs", True, NOIR)
+		txt2 = font.render("Joueur vs IA", True, NOIR)
+		screen.blit(txt1, (btn1.x + (btn1.width - txt1.get_width()) // 2, btn1.y + (btn1.height - txt1.get_height()) // 2))
+		screen.blit(txt2, (btn2.x + (btn2.width - txt2.get_width()) // 2, btn2.y + (btn2.height - txt2.get_height()) // 2))
 
-        pygame.display.flip()
+		pygame.display.flip()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if btn1.collidepoint(event.pos):
-                    return "2J"
-                elif btn2.collidepoint(event.pos):
-                    return "IA"
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				sys.exit()
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_ESCAPE:
+					pygame.quit()
+					sys.exit()
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				if btn1.collidepoint(event.pos):
+					return "2J"
+				elif btn2.collidepoint(event.pos):
+					return "IA"
 
 
 def boucle_jeu(mode):
@@ -195,7 +194,24 @@ def boucle_jeu(mode):
 		if not coups:
 			joueur = 'B' if joueur == 'N' else 'N'
 			if not lister_coups_valides(plateau, joueur):
-				break
+				# Fin de la partie
+				noirs = sum(row.count('N') for row in plateau)
+				blancs = sum(row.count('B') for row in plateau)
+				if mode == "IA":
+					if noirs > blancs:
+						ecran_fin("victoire")
+					elif noirs < blancs:
+						ecran_fin("defaite")
+					else:
+						ecran_fin("egalite")
+				else:
+					if noirs > blancs:
+						ecran_fin("noirs")
+					elif noirs < blancs:
+						ecran_fin("blancs")
+					else:
+						ecran_fin("egalite")
+				return
 			continue
 
 		if mode == "IA" and joueur == IA_joueur:
@@ -224,10 +240,44 @@ def boucle_jeu(mode):
 
 		clock.tick(FPS)
 
-	# Affichage fin de jeu
-	dessiner_plateau(plateau, [])
-	pygame.display.flip()
-	pygame.time.wait(3000)
+
+def ecran_fin(resultat):
+    screen.fill(NOIR)
+
+    if resultat == "noirs":
+        texte = "Victoire des Noirs !"
+    elif resultat == "blancs":
+        texte = "Victoire des Blancs !"
+    elif resultat == "egalite":
+        texte = "Égalité !"
+    elif resultat == "victoire":
+        texte = "Victoire contre l'IA !"
+    elif resultat == "defaite":
+        texte = "Défaite contre l'IA !"
+
+
+    font_fin = pygame.font.SysFont(None, 64)
+    texte_surface = font_fin.render(texte, True, BLANC)
+    screen.blit(texte_surface, (840 // 2 - texte_surface.get_width() // 2, 640 // 2 - texte_surface.get_height() // 2 - 50))
+
+    btn_menu = pygame.Rect(840 // 2 - 100, 640 // 2 + 50, 200, 60)
+    pygame.draw.rect(screen, GRIS, btn_menu)
+    texte_menu = font.render("Menu", True, NOIR)
+    screen.blit(texte_menu, (btn_menu.x + (btn_menu.width - texte_menu.get_width()) // 2,
+                             btn_menu.y + (btn_menu.height - texte_menu.get_height()) // 2))
+
+    pygame.display.flip()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if btn_menu.collidepoint(event.pos):
+                    return
+            elif event.type == pygame.KEYDOWN:
+                return
 
 
 if __name__ == '__main__':
