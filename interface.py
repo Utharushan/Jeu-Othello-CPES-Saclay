@@ -32,8 +32,13 @@ def dessiner_plateau(plateau, coups_possibles, screen):
 	return maison_rect
 
 
-def ecran_fin(screen, resultat):
+def ecran_fin(screen, resultat, noirs, blancs, IA_joueur=None):
 	screen.fill(NOIR)
+
+	texte_score = f"Score - Noirs: {noirs}, Blancs: {blancs}"
+	font_fin = pygame.font.SysFont(None, 64)
+	texte_surface_score = font_fin.render(texte_score, True, BLANC)
+	screen.blit(texte_surface_score, (840 // 2 - texte_surface_score.get_width() // 2, 640 // 2 - texte_surface_score.get_height() // 2 - 100))
 
 	if resultat == "noirs":
 		texte = "Victoire des Noirs !"
@@ -41,14 +46,15 @@ def ecran_fin(screen, resultat):
 		texte = "Victoire des Blancs !"
 	elif resultat == "egalite":
 		texte = "Égalité !"
-	elif resultat == "victoire":
-		texte = "Victoire contre l'IA !"
-	elif resultat == "defaite":
-		texte = "Défaite contre l'IA !"
 
-	font_fin = pygame.font.SysFont(None, 64)
+	if IA_joueur == 'N':
+		texte = "Défaite contre l'IA (Noirs) !" if noirs > blancs else "Victoire contre l'IA (Noirs) !"
+	elif IA_joueur == 'B':
+		texte = "Défaite contre l'IA (Blancs) !" if blancs > noirs else "Victoire contre l'IA (Blancs) !"
+
+
 	texte_surface = font_fin.render(texte, True, BLANC)
-	screen.blit(texte_surface, (840 // 2 - texte_surface.get_width() // 2, 640 // 2 - texte_surface.get_height() // 2 - 50))
+	screen.blit(texte_surface, (840 // 2 - texte_surface.get_width() // 2, 640 // 2 - texte_surface.get_height() // 2))
 
 	btn_menu = pygame.Rect(840 // 2 - 100, 640 // 2 + 50, 200, 60)
 	pygame.draw.rect(screen, GRIS, btn_menu)

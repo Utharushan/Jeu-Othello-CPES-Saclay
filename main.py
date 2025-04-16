@@ -7,5 +7,5 @@ pygame.display.set_caption("Othello")
 
 if __name__ == '__main__':
 	while True:
-		choix = menu(screen)
-		boucle_jeu(screen, choix)
+		mode, joueur_humain = menu(screen)
+		boucle_jeu(screen, mode, joueur_humain)
