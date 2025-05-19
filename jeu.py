@@ -115,7 +115,7 @@ def boucle_jeu(screen, mode, joueur_humain=None):
 
 		# Tour de l'IA ou mode IA vs IA : l'IA joue automatiquement
 		if (mode == "IA" and joueur == IA_joueur) or mode == "IAvsIA":
-			_, coup = minmax(plateau, 3, True, joueur, -math.inf, math.inf, joueur)
+			_, coup = minmax(plateau, 5, True, joueur, -math.inf, math.inf, joueur)
 			pygame.time.delay(500)
 			if coup:
 				appliquer_coup(plateau, *coup, joueur)
