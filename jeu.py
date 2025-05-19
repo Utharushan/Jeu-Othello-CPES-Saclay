@@ -130,7 +130,7 @@ def boucle_jeu(screen, mode, joueur_humain=None):
 			if mode == "IAvsIA":
 				continue
 			elif event.type == pygame.MOUSEBUTTONDOWN:
-				# Retour au menu si clic sur le bouton (sauf en mode IA vs IA)
+				# Retour au menu si clic sur le bouton
 				if maison_rect is not None and maison_rect.collidepoint(event.pos):
 					return
 				x, y = event.pos[1] // TAILLE_CASE, event.pos[0] // TAILLE_CASE
