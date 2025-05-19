@@ -8,6 +8,14 @@ from interface import dessiner_plateau, ecran_fin
 
 
 def menu(screen):
+    """
+    Prend en entrée l'écran pygame
+    ---------------------------------------------------------------
+    Affiche le menu principal avec les différents modes de jeu (2 joueurs, Joueur vs IA, IA vs IA).
+    Gère les clics sur les boutons pour sélectionner le mode de jeu.
+    ---------------------------------------------------------------
+    Retourne un tuple (mode, joueur_humain) selon le choix de l'utilisateur
+    """
     fond = pygame.image.load("background.jpg").convert_alpha()
     fond = pygame.transform.scale(fond, (840, 640))
     options = ["2 joueurs", "Joueur vs IA", "IA vs IA"]
@@ -35,6 +43,14 @@ def menu(screen):
 
 
 def choisir_couleur(screen):
+    """
+    Prend en entrée l'écran pygame
+    ---------------------------------------------------------------
+    Affiche un menu pour choisir la couleur du joueur humain (Noirs ou Blancs) lors d'une partie contre l'IA.
+    Gère les clics sur les boutons pour sélectionner la couleur.
+    ---------------------------------------------------------------
+    Retourne un tuple ("IA", couleur) où couleur est 'N' ou 'B'
+    """
     fond = pygame.image.load("background.jpg").convert_alpha()
     fond = pygame.transform.scale(fond, (840, 640))
     options = ["Jouer Noirs", "Jouer Blancs"]
@@ -60,6 +76,14 @@ def choisir_couleur(screen):
 
 
 def boucle_jeu(screen, mode, joueur_humain=None):
+    """
+    Prend en entrée l'écran pygame, le mode de jeu et éventuellement la couleur du joueur humain
+    ---------------------------------------------------------------
+    Gère la boucle principale du jeu : affichage du plateau, gestion des tours, application des coups,
+    appel de l'IA si besoin, détection de la fin de partie et affichage de l'écran de fin.
+    ---------------------------------------------------------------
+    Retourne None (fonction bloquante jusqu'à la fin de la partie ou retour au menu)
+    """
     plateau = init_plateau()
     joueur = 'N'
     IA_joueur = 'B' if joueur_humain == 'N' else 'N' if joueur_humain == 'B' else None
@@ -72,6 +96,7 @@ def boucle_jeu(screen, mode, joueur_humain=None):
         )
         pygame.display.flip()
 
+        # Vérifie la fin de partie (aucun coup possible pour les deux joueurs)
         if not coups:
             joueur = 'B' if joueur == 'N' else 'N'
             if not lister_coups_valides(plateau, joueur):
@@ -88,6 +113,7 @@ def boucle_jeu(screen, mode, joueur_humain=None):
                     ecran_fin(screen, resultat, noirs, blancs)
                 return
 
+        # Tour de l'IA ou mode IA vs IA : l'IA joue automatiquement
         if (mode == "IA" and joueur == IA_joueur) or mode == "IAvsIA":
             _, coup = minmax(plateau, 3, True, joueur, -math.inf, math.inf, joueur)
             pygame.time.delay(500)
@@ -96,11 +122,13 @@ def boucle_jeu(screen, mode, joueur_humain=None):
                 joueur = 'B' if joueur == 'N' else 'N'
             continue
 
+        # Gestion des événements pour le joueur humain
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                # Retour au menu si clic sur le bouton (sauf en mode IA vs IA)
                 if mode != "IAvsIA" and maison_rect.collidepoint(event.pos):
                     return
                 x, y = event.pos[1] // TAILLE_CASE, event.pos[0] // TAILLE_CASE
