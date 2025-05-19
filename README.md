@@ -1,6 +1,6 @@
 # Jeu Othello
 
-Ce projet est une implémentation complète du jeu **Othello (Reversi)** en Python, avec une interface graphique développée avec **Pygame**. Il propose un mode "2 joueurs" ainsi qu’un mode "Joueur contre IA" utilisant l’algorithme **Minimax avec élagage alpha-bêta**.
+Ce projet est une implémentation complète du jeu **Othello (Reversi)** en Python, avec une interface graphique développée avec **Pygame**. Il propose un mode "2 joueurs", un mode "Joueur contre IA" utilisant l’algorithme **Minimax avec élagage alpha-bêta**, ainsi qu’un mode **IA vs IA**.
 
 ---
 
@@ -12,6 +12,9 @@ Ce projet est une implémentation complète du jeu **Othello (Reversi)** en Pyth
 - **Joueur vs IA** :
   - Le joueur peut choisir de jouer les noirs ou les blancs.
   - L’IA utilise une stratégie de recherche basée sur l’algorithme Minimax optimisé.
+- **IA vs IA** :
+  - Deux intelligences artificielles s’affrontent automatiquement.
+  - Permet d’observer le comportement de l’IA et de comparer les stratégies.
 
 ### Intelligence Artificielle
 
@@ -27,6 +30,7 @@ Ce projet est une implémentation complète du jeu **Othello (Reversi)** en Pyth
 - Visualisation des scores en temps réel.
 - Écran de fin indiquant le gagnant et les scores finaux.
 - Retours visuels dynamiques pour une meilleure jouabilité.
+- Mode **IA vs IA** entièrement automatisé et observable.
 
 ---
 

@@ -3,33 +3,37 @@ from constantes import *
 from plateau import score
 
 
-def dessiner_plateau(plateau, coups_possibles, screen):
-	screen.fill(VERT)
-	for x in range(TAILLE):
-		for y in range(TAILLE):
-			rect = pygame.Rect(y * TAILLE_CASE, x * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
-			pygame.draw.rect(screen, NOIR, rect, 1)
-			if plateau[x][y] == 'N':
-				pygame.draw.circle(screen, NOIR, rect.center, TAILLE_CASE // 2 - 5)
-			elif plateau[x][y] == 'B':
-				pygame.draw.circle(screen, BLANC, rect.center, TAILLE_CASE // 2 - 5)
-			elif (x, y) in coups_possibles:
-				pygame.draw.circle(screen, GRIS, rect.center, 5)
+def dessiner_plateau(plateau, coups_possibles, screen, afficher_menu=True, joueur='N'):
+    screen.fill(VERT)
+    for x in range(TAILLE):
+        for y in range(TAILLE):
+            rect = pygame.Rect(y * TAILLE_CASE, x * TAILLE_CASE, TAILLE_CASE, TAILLE_CASE)
+            pygame.draw.rect(screen, NOIR, rect, 1)
+            if plateau[x][y] == 'N':
+                pygame.draw.circle(screen, NOIR, rect.center, TAILLE_CASE // 2 - 5)
+            elif plateau[x][y] == 'B':
+                pygame.draw.circle(screen, BLANC, rect.center, TAILLE_CASE // 2 - 5)
+            elif (x, y) in coups_possibles:
+                couleur_point = NOIR if joueur == 'N' else BLANC
+                pygame.draw.circle(screen, couleur_point, rect.center, 5)
 
-	noirs = sum(row.count('N') for row in plateau)
-	blancs = sum(row.count('B') for row in plateau)
-	pygame.draw.rect(screen, (50, 50, 50), (DIMENSION, 0, 200, DIMENSION))
-	text_noirs = font.render(f"Noirs: {noirs}", True, BLANC)
-	text_blancs = font.render(f"Blancs: {blancs}", True, BLANC)
-	screen.blit(text_noirs, (DIMENSION + 20, 50))
-	screen.blit(text_blancs, (DIMENSION + 20, 100))
+    noirs = sum(row.count('N') for row in plateau)
+    blancs = sum(row.count('B') for row in plateau)
+    pygame.draw.rect(screen, (50, 50, 50), (DIMENSION, 0, 200, DIMENSION))
+    text_noirs = font.render(f"Noirs: {noirs}", True, BLANC)
+    text_blancs = font.render(f"Blancs: {blancs}", True, BLANC)
+    screen.blit(text_noirs, (DIMENSION + 20, 50))
+    screen.blit(text_blancs, (DIMENSION + 20, 100))
 
-	maison_rect = pygame.Rect(DIMENSION + 50, DIMENSION - 100, 100, 50)
-	pygame.draw.rect(screen, GRIS, maison_rect)
-	maison_texte = font.render("Menu", True, NOIR)
-	screen.blit(maison_texte, (maison_rect.x + (maison_rect.width - maison_texte.get_width()) // 2,
-							   maison_rect.y + (maison_rect.height - maison_texte.get_height()) // 2))
-	return maison_rect
+    if afficher_menu:
+        maison_rect = pygame.Rect(DIMENSION + 50, DIMENSION - 100, 100, 50)
+        pygame.draw.rect(screen, GRIS, maison_rect)
+        maison_texte = font.render("Menu", True, NOIR)
+        screen.blit(maison_texte, (maison_rect.x + (maison_rect.width - maison_texte.get_width()) // 2,
+                                   maison_rect.y + (maison_rect.height - maison_texte.get_height()) // 2))
+        return maison_rect
+    else:
+        return None
 
 
 def ecran_fin(screen, resultat, noirs, blancs, IA_joueur=None):

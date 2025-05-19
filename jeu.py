@@ -67,7 +67,9 @@ def boucle_jeu(screen, mode, joueur_humain=None):
 
     while True:
         coups = lister_coups_valides(plateau, joueur)
-        maison_rect = dessiner_plateau(plateau, coups, screen)
+        maison_rect = dessiner_plateau(
+            plateau, coups, screen, afficher_menu=(mode != "IAvsIA"), joueur=joueur
+        )
         pygame.display.flip()
 
         if not coups:
@@ -99,7 +101,8 @@ def boucle_jeu(screen, mode, joueur_humain=None):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if maison_rect.collidepoint(event.pos): return
+                if mode != "IAvsIA" and maison_rect.collidepoint(event.pos):
+                    return
                 x, y = event.pos[1] // TAILLE_CASE, event.pos[0] // TAILLE_CASE
                 if (x, y) in coups:
                     appliquer_coup(plateau, x, y, joueur)
