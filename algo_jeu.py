@@ -16,10 +16,10 @@ COEFF_POSITION = [
 def eval_simple(plateau, joueur):
     """
     Prend en entrée un plateau et un joueur
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Calcule la différence de score entre les deux joueurs et ajoute un poids
     basé sur la position des pions selon une table de pondération.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne un score entier représentant l'évaluation du plateau pour le joueur
     """
     adv = 'B' if joueur == 'N' else 'N'
@@ -38,10 +38,10 @@ def eval_simple(plateau, joueur):
 def eval_mobilite(plateau, joueur):
     """
     Prend en entrée un plateau et un joueur
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Calcule la mobilité de l'adversaire, c'est-à-dire le nombre de coups
     disponibles pour l'adversaire, et retourne l'opposé de ce nombre.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne un entier négatif correspondant à la mobilité adverse
     """
     adv = 'B' if joueur == 'N' else 'N'
@@ -51,10 +51,10 @@ def eval_mobilite(plateau, joueur):
 def score_coup(coup, plateau, joueur, IA_joueur):
     """
     Prend en entrée un coup, un plateau, le joueur courant et le joueur IA
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Applique le coup sur une copie du plateau, puis évalue ce nouveau plateau
     en utilisant la fonction d'évaluation simple et la mobilité.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne un score entier pour ce coup
     """
     i, j = coup
@@ -68,10 +68,10 @@ def score_coup(coup, plateau, joueur, IA_joueur):
 def trier_coups(coups, plateau, joueur, maximisant, IA_joueur):
     """
     Prend en entrée la liste des coups, le plateau, le joueur, un booléen maximisant et le joueur IA
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Trie la liste des coups selon leur score d'évaluation, du meilleur au pire
     si maximisant, ou l'inverse sinon, pour optimiser la recherche Minimax.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne la liste triée des coups
     """
     n = len(coups)
@@ -89,11 +89,11 @@ def minmax(plateau, profondeur, maximisant, joueur, alpha, beta, IA_joueur):
     """
     Prend en entrée un plateau, la profondeur de recherche, un booléen maximisant,
     le joueur courant, les valeurs alpha et beta pour l'élagage, et le joueur IA
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Implémente l'algorithme Minimax avec élagage alpha-bêta pour explorer
     récursivement les coups possibles et choisir le meilleur coup pour l'IA.
     Utilise l'évaluation simple et la mobilité pour estimer la valeur des plateaux.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne un tuple (score, meilleur_coup) où score est l'évaluation du plateau
     et meilleur_coup le coup optimal trouvé
     """

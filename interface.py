@@ -7,10 +7,10 @@ def dessiner_plateau(plateau, coups_possibles, screen, afficher_menu=True, joueu
     """
     Prend en entrée le plateau, la liste des coups possibles, l'écran pygame,
     un booléen pour afficher le bouton menu, et le joueur courant
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Affiche graphiquement le plateau de jeu, les pions, les coups possibles
     (points noirs ou blancs selon le joueur), les scores et éventuellement le bouton menu.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne le rectangle du bouton menu si affiché, sinon None
     """
     screen.fill(VERT)
@@ -49,10 +49,10 @@ def ecran_fin(screen, resultat, noirs, blancs, IA_joueur=None):
     """
     Prend en entrée l'écran pygame, le résultat de la partie, le score noirs, le score blancs,
     et éventuellement la couleur jouée par l'IA
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Affiche l'écran de fin de partie avec le score, le gagnant, et un bouton pour retourner au menu.
     Gère aussi les messages spécifiques en cas de partie contre l'IA.
-    ---------------------------------------------------------------
+    ---------------------------------------------------------------------------
     Retourne None (fonction bloquante jusqu'à action utilisateur)
     """
     screen.fill(NOIR)
