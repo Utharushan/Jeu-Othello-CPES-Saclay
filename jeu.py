@@ -10,11 +10,11 @@ from interface import dessiner_plateau, ecran_fin
 def menu(screen):
     fond = pygame.image.load("background.jpg").convert_alpha()
     fond = pygame.transform.scale(fond, (840, 640))
-    options = ["2 joueurs", "Joueur vs IA"]
+    options = ["2 joueurs", "Joueur vs IA", "IA vs IA"]
 
     while True:
         screen.blit(fond, (0, 0))
-        btns = [pygame.Rect(840 // 2 - 150, 200 + i * 100, 300, 60) for i in range(2)]
+        btns = [pygame.Rect(840 // 2 - 150, 200 + i * 100, 300, 60) for i in range(3)]
         for i, btn in enumerate(btns):
             pygame.draw.rect(screen, GRIS, btn)
             txt = font.render(options[i], True, NOIR)
@@ -30,6 +30,8 @@ def menu(screen):
                     return "2J", None
                 elif btns[1].collidepoint(event.pos):
                     return choisir_couleur(screen)
+                elif btns[2].collidepoint(event.pos):
+                    return "IAvsIA", None
 
 
 def choisir_couleur(screen):
@@ -76,13 +78,16 @@ def boucle_jeu(screen, mode, joueur_humain=None):
                 if mode == "IA":
                     resultat = "egalite" if noirs == blancs else None
                     ecran_fin(screen, resultat, noirs, blancs, IA_joueur)
+                elif mode == "IAvsIA":
+                    resultat = "noirs" if noirs > blancs else "blancs" if noirs < blancs else "egalite"
+                    ecran_fin(screen, resultat, noirs, blancs)
                 else:
                     resultat = "noirs" if noirs > blancs else "blancs" if noirs < blancs else "egalite"
                     ecran_fin(screen, resultat, noirs, blancs)
                 return
 
-        if mode == "IA" and joueur == IA_joueur:
-            _, coup = minmax(plateau, 3, True, joueur, -math.inf, math.inf, IA_joueur)
+        if (mode == "IA" and joueur == IA_joueur) or mode == "IAvsIA":
+            _, coup = minmax(plateau, 3, True, joueur, -math.inf, math.inf, joueur)
             pygame.time.delay(500)
             if coup:
                 appliquer_coup(plateau, *coup, joueur)
